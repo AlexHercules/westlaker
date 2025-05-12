@@ -1,0 +1,76 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+// Skip Crashlytics upload. It breaks the process of building.
+gradle.taskGraph.whenReady {
+    tasks.each { task ->
+        if (task.name.contains("uploadCrashlyticsMappingFileRelease")) {
+            task.enabled = false
+        }
+    }
+}
+android {
+    compileSdkVersion 35
+
+    ndkVersion "28.0.13004108"
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+
+    defaultConfig {
+        applicationId "io.github.danxi_dev.dan_xi"
+        namespace "io.github.danxi_dev.dan_xi"
+        minSdk 23
+        targetSdk 35
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+    }
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Only used when building a released work.
+            signingConfig signingConfigs.release
+        }
+    }
+    packagingOptions {
+        jniLibs {
+            // Enabling the compression of the native libraries, which is disabled by default for performance reasons.
+            // The option name, `useLegacyPackaging`, is a bit misleading. It's actually about the compression of the native libraries.
+            // We weight the size of the APK file more than the little performance gain, so we enable it.
+            // See https://developer.android.com/guide/practices/page-sizes for more information.
+            useLegacyPackaging true
+        }
+    }
+    lint {
+        disable 'InvalidPackage'
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation 'com.google.android.material:material:1.12.0'
+}

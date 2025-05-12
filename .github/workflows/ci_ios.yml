@@ -1,0 +1,90 @@
+name: Automated-CI-iOS-Beta
+
+# fixme(2024-3-7): this CI action does not inject GIT_HASH into the build command, so it should not be used for releases.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Automated-CI-iOS:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Use Latest Xcode
+        uses: devbotsxyz/xcode-select@v1.1.0
+        with:
+          version: 14.1
+          beta: false
+      
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.3.8'
+          channel: 'stable'
+          
+      - name: Prepare Flutter Dependencies
+        run: |
+          flutter pub get
+          flutter pub global activate intl_utils
+          flutter pub global run intl_utils:generate
+          
+      - name: Bump Build Number
+        run: |
+          flutter pub global activate cider
+          flutter pub global run cider bump build
+      
+      - name: Generate Models
+        run: dart run build_runner build --delete-conflicting-outputs
+      
+      - name: Get Flutter Version
+        id: get_flutter_version
+        uses: its404/get-flutter-version@v1.0.0
+      
+      - name: Update Xcode Build Number
+        uses: yanamura/ios-bump-version@v1
+        with:
+          version: ${{ steps.get_flutter_version.outputs.version_number }}
+          build-number: ${{ steps.get_flutter_version.outputs.build_number }}
+          project-path: ios
+      
+      - name: Commit Build Number Update
+        run: |
+          git add .
+          git commit -m "[GitHub Action] Bump Build Number"
+      
+      - name: Push Build Number Update
+        run: git push origin
+
+      - name: Import Keys
+        run: |
+          echo -n "${{ secrets.MATCH_SSH_KEY_BASE64 }}" | base64 -d -o $HOME/.ssh/id_rsa
+          chmod 400 $HOME/.ssh/id_rsa
+          export MATCH_GIT_PRIVATE_KEY=$HOME/.ssh/id_rsa
+
+      - name: Import Secrets
+        uses: actions/checkout@v2
+        with:
+          repository: DanXi-Dev/DanXi-secrets
+          path: secrets
+          ssh-key: ${{ secrets.SECRETS_SSH_KEY }}
+      
+      - name: Populate Secrets
+        run: |
+          mv -f secrets/sksl_default.json CI/sksl_default.json
+
+      - name: Configure Xcode
+        run: flutter build ios --release --config-only # --bundle-sksl-path CI/sksl_default.json
+
+      - name: Build and Upload via Fastlane
+        uses: maierj/fastlane-action@v2.1.0
+        with:
+          lane: 'beta'
+          subdirectory: 'ios'
+          skip-tracking: true
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY }}
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_KEY_ID }}

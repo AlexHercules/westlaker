@@ -1,0 +1,14 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Kavin Zhao on 2021/10/15.
+  
+*/
+
+CFBundleDisplayName = "DanXi";
+NSLocationWhenInUseUsageDescription = "To provide location information for Safety Fudan check-in";
+NSLocationAlwaysUsageDescription = "To provide location information for Safety Fudan check-in";
+NSPhotoLibraryUsageDescription = "To upload images to Forum";
+NSCameraUsageDescription = "To upload images to Forum";
+NSCalendarsUsageDescription = "To save events to your calendar";
