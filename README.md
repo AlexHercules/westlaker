@@ -1,23 +1,23 @@
-中文版 [English Version](README_EN.md)
-[官方网站](https://danxi.fduhole.com)
+西湖大学版 [English Version](README_EN.md)
+[官方网站](https://westlake-app.example.com)
 
-# 旦挞
+# 西湖助手
 
-[![CI](https://github.com/DanXi-Dev/DanXi/actions/workflows/ci_ios.yml/badge.svg)](https://github.com/DanXi-Dev/DanXi/actions/workflows/ci_ios.yml)
+[![CI](https://github.com/AlexHercules/westlaker/actions/workflows/ci_ios.yml/badge.svg)](https://github.com/AlexHercules/westlaker/actions/workflows/ci_ios.yml)
 [![Deploy to GitHub Pages](https://github.com/DanXi-Dev/DanXi/actions/workflows/deploy_to_gh-pages.yml/badge.svg)](https://github.com/DanXi-Dev/DanXi/actions/workflows/deploy_to_gh-pages.yml)
 
-（原名旦夕、旦兮）
 
-日月光华，旦复旦兮.
 
-可能是为 FDUer 准备的,最好的一站式服务 APP!
+
+
+可能是为西湖大学师生准备的,最好的一站式服务 APP!
 
 - 校园卡余额和消费记录
 - 食堂消费人数
-- 快速显示复活码（支持 Apple Watch 显示）
+- 快速显示二维码（支持 Apple Watch 显示）
 - 空教室查询
-- 刷锻次数查询
-- 茶楼
+- 体育打卡/活动查询
+- 茶楼 (社区功能，可能需要根据西湖大学情况调整或重设)
 - 课表查阅与导出至系统日历等
 - 显示教务处通知
 - 查询期中/期末考试日程与导出至系统日历等
@@ -32,22 +32,22 @@
 
 ## iOS(watchOS)/iPadOS
 
-从 [App Store](https://apps.apple.com/app/id1568629997) 下载
+从 [App Store](https://apps.apple.com/cn/app/your-westlake-app-id) 下载
 
 ## Android
 
-打开 [release 页面](https://github.com/DanXi-Dev/DanXi/releases/latest) 下载最新版 apk 安装包，安装即可。
+打开 [release 页面](https://github.com/YourUser/WestlakeAppRepo/releases/latest) 下载最新版 apk 安装包，安装即可。
 （依据设备差异，您可能需要在设置中允许「安装来自未知来源的应用」）
 
 ## Windows
 
-打开 [release 页面](https://github.com/DanXi-Dev/DanXi/releases/latest) 下载最新版 zip 压缩包，解压运行即可。
+打开 [release 页面](https://github.com/YourUser/WestlakeAppRepo/releases/latest) 下载最新版 zip 压缩包，解压运行即可。
 
 ## macOS
 
-使用 Apple Silicon 的用户可以直接从 [App Store](https://apps.apple.com/app/id1568629997) 下载。
+使用 Apple Silicon 的用户可以直接从 [App Store](https://apps.apple.com/cn/app/your-westlake-app-id) 下载。
 
-Apple Intel 用户请打开 [release 页面](https://github.com/DanXi-Dev/DanXi/releases/latest) 下载最新版
+Apple Intel 用户请打开 [release 页面](https://github.com/YourUser/WestlakeAppRepo/releases/latest) 下载最新版
 dmg 硬盘映像，挂载拷贝即可。
 
 # 构建
@@ -89,4 +89,4 @@ dart run build_runner build --delete-conflicting-outputs
 
 由于 Apple Developer Program 费用（发布应用至 App Store 和 TestFlight 所必需）费用较高，如果您希望赞助我们，请通过邮件联系我们！
 
-我们的邮箱：[dev@danta.tech](mailto:dev@danta.tech)
+我们的邮箱：[dev@westlake.app](mailto:dev@westlake.app)
